@@ -65,6 +65,25 @@ def new_mac():
     return "52:54:00:%02x:%02x:%02x" % (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 
 
+def mem_mib(el):
+    if el is None or not el.text:
+        return 0
+    try:
+        val = int(el.text)
+    except ValueError:
+        return 0
+    unit = (el.get("unit") or "KiB").strip()
+    if unit in ("KiB", "K", "k"):
+        return val // 1024
+    if unit in ("MiB", "M", "m"):
+        return val
+    if unit in ("GiB", "G", "g"):
+        return val * 1024
+    if unit == "bytes":
+        return val // (1024 * 1024)
+    return val // 1024
+
+
 class VM:
 
     def __init__(self, backend, dom):
@@ -77,9 +96,22 @@ class VM:
         except Exception:
             info = [5, 0, 0, 0, 0]
         self.state = info[0]
-        self.maxmem_mb = int(info[1]) // 1024
-        self.mem_mb = int(info[2]) // 1024
-        self.vcpus = int(info[3])
+        self.live_maxmem_mb = int(info[1]) // 1024
+        self.live_mem_mb = int(info[2]) // 1024
+        self.live_vcpus = int(info[3])
+        self.maxmem_mb = self.live_maxmem_mb
+        self.mem_mb = self.live_mem_mb
+        self.vcpus = self.live_vcpus
+        try:
+            cfg_root = ET.fromstring(backend._config_xml(dom))
+            vcpu_el = cfg_root.find("vcpu")
+            if vcpu_el is not None and vcpu_el.text:
+                self.vcpus = int(vcpu_el.text)
+            configured = mem_mib(cfg_root.find("memory"))
+            if configured:
+                self.maxmem_mb = configured
+        except Exception:
+            pass
         try:
             self.autostart = bool(dom.autostart())
         except Exception:
@@ -360,7 +392,7 @@ class Backend:
         loader = osel.find("loader")
         return {
             "vcpu": int((root.findtext("vcpu") or "1").strip() or 1),
-            "ram": int((root.findtext("memory") or "1048576").strip()) // 1024,
+            "ram": mem_mib(root.find("memory")),
             "kvm": (root.get("type") == "kvm"),
             "machine": typel.get("machine") if typel is not None else "pc",
             "uefi": osel.get("firmware") == "efi" or loader is not None,

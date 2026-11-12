@@ -249,8 +249,18 @@ class DetailsPanel(QWidget):
         if not vm:
             return
         self.info_form.addRow(T("det.os"), QLabel(vm.os_name))
-        self.info_form.addRow(T("det.vcpu"), QLabel(str(vm.vcpus)))
-        self.info_form.addRow(T("pgstats.mem"), QLabel(widgets.fmt_mb(vm.maxmem_mb)))
+        vcpu_txt = str(vm.vcpus)
+        mem_txt = widgets.fmt_mb(vm.maxmem_mb)
+        if vm.state in (1, 2, 3, 7):
+            live_v = getattr(vm, "live_vcpus", vm.vcpus)
+            live_m = getattr(vm, "live_maxmem_mb", vm.maxmem_mb)
+            if live_v != vm.vcpus:
+                vcpu_txt = "%d (%s %d)" % (vm.vcpus, T("det.now"), live_v)
+            if live_m != vm.maxmem_mb:
+                mem_txt = "%s (%s %s)" % (widgets.fmt_mb(vm.maxmem_mb), T("det.now"),
+                                          widgets.fmt_mb(live_m))
+        self.info_form.addRow(T("det.vcpu"), QLabel(vcpu_txt))
+        self.info_form.addRow(T("pgstats.mem"), QLabel(mem_txt))
         self.info_form.addRow(T("det.uuid"), QLabel(vm.uuid))
         self.info_form.addRow(T("act.autostart"), QLabel("✓" if vm.autostart else "-"))
 

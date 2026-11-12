@@ -102,6 +102,7 @@ S = {
     "cd.dir_note_remote": {"ru": "Диск: /var/lib/libvirt/images/<имя>/ (на удалённом хосте)", "en": "Disk: /var/lib/libvirt/images/<name>/ (on the remote host)", "zh": "磁盘：/var/lib/libvirt/images/<名称>/（在远程主机上）", "pt": "Disco: /var/lib/libvirt/images/<nome>/ (no host remoto)", "es": "Disco: /var/lib/libvirt/images/<nombre>/ (en el host remoto)"},
     "cd.host_limits": {"ru": "Хост: {ram} ОЗУ, {cpus} CPU (это максимум для ВМ)", "en": "Host: {ram} RAM, {cpus} CPUs (maximum for a VM)", "zh": "主机：{ram} 内存，{cpus} CPU（虚拟机上限）", "pt": "Host: {ram} de RAM, {cpus} CPUs (máximo para uma VM)", "es": "Host: {ram} de RAM, {cpus} CPUs (máximo para una VM)"},
     "det.ram_max":    {"ru": "максимум {ram} (ОЗУ хоста)", "en": "max {ram} (host RAM)", "zh": "最大 {ram}（主机内存）", "pt": "máx. {ram} (RAM do host)", "es": "máx. {ram} (RAM del host)"},
+    "det.now":        {"ru": "сейчас", "en": "now", "zh": "当前", "pt": "agora", "es": "ahora"},
     "cd.dup":         {"ru": "Такое имя уже занято", "en": "Name already taken", "zh": "名称已被占用", "pt": "Nome já em uso", "es": "El nombre ya está en uso"},
     "cd.need_name":   {"ru": "Введите имя ВМ", "en": "Enter a VM name", "zh": "请输入虚拟机名称", "pt": "Digite um nome para a VM", "es": "Escriba un nombre para la VM"},
     "cd.other":       {"ru": "Другое / без шаблона", "en": "Other / no template", "zh": "其他 / 无模板", "pt": "Outro / sem modelo", "es": "Otro / sin plantilla"},
