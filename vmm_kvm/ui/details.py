@@ -11,7 +11,7 @@ from PySide6.QtWidgets import (QCheckBox, QComboBox, QFormLayout, QGridLayout,
 from .. import i18n
 from . import theme, widgets
 from .dialogs import (AddDiskDialog, FilePickerDialog, SnapshotDialog,
-                      confirm, show_error)
+                      confirm, show_error, show_info)
 
 T = lambda key, **kw: i18n.t(key, **kw)
 VIDEOS = ["virtio", "qxl", "vga", "cirrus"]
